@@ -1,31 +1,31 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-import { AppComponent } from "./app.component";
-import { LayoutComponent } from "./main-layout/layout/layout.component";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
+import { LayoutComponent } from './main-layout/layout/layout.component';
 
 const routes: Routes = [
   {
-    path: "",
-    redirectTo: "/auth",
-    pathMatch: "full"
+    path: '',
+    redirectTo: '/auth',
+    pathMatch: 'full'
   },
   {
-    path: "",
+    path: '',
     component: AppComponent,
     children: [
       {
-        path: "auth",
-        loadChildren: "./auth/auth.module#AuthModule"
+        path: 'auth',
+        loadChildren: './auth/auth.module#AuthModule'
       }
     ]
   },
   {
-    path: "",
+    path: '',
     component: LayoutComponent,
     children: [
       {
-        path: "home",
-        loadChildren: "./home/home.module#HomeModule"
+        path: 'home',
+        loadChildren: './home/home.module#HomeModule'
       }
     ]
   }
