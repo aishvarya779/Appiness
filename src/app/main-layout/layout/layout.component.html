@@ -1,6 +1,16 @@
-<p>
-  layout works!
-</p>
+<mat-toolbar color="accent">
+  <span> Home</span>
+  <span fxFlex></span>
+  <button mat-button [matMenuTriggerFor]="menu">Admin <mat-icon>keyboard_arrow_down</mat-icon></button>
+  <mat-menu #menu="matMenu" yPosition="below">
+    <button mat-menu-item>
+      <mat-icon>account_circle</mat-icon> Profile
+    </button>
+    <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon> Logout
+    </button>
+  </mat-menu>
+</mat-toolbar>
 <router-outlet>
 
 </router-outlet>
