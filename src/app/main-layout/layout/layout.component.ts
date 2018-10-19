@@ -14,16 +14,16 @@ export class LayoutComponent implements OnInit {
   constructor(private _router: Router, private _userAuth: UserAuthService) {}
 
   ngOnInit() {
-    this.userData$ = this._userAuth.userData$;
-    this.userData$.subscribe(data => {
-      if (data) {
-        this.userData = data;
+    this._userAuth.userData$.subscribe(val => {
+      if (val) {
+        this.userData = val;
       }
     });
   }
 
   logout() {
     localStorage.removeItem('currentUser');
+    this._userAuth.clearUserData();
     this._router.navigate(['/']);
   }
 }

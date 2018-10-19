@@ -6,7 +6,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserAuthService {
   public userData$ = new BehaviorSubject(null);
-  constructor() {}
+  constructor() {
+    const cUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (cUser) {
+      this.setUserData(cUser);
+    }
+  }
 
   setUserData(userData) {
     this.userData$.next(userData);
