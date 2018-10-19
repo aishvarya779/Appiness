@@ -46,7 +46,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 mobile: user.mobile,
                 role: user.role,
                 address: user.address,
-                token: 'fake-jwt-token'
+                token:
+                  user.role === 'Admin'
+                    ? 'fake-jwt-admin-token'
+                    : 'fake-jwt-user-token'
               };
 
               return of(new HttpResponse({ status: 200, body: body }));
@@ -60,27 +63,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           // get users
           if (request.url.endsWith('/users') && request.method === 'GET') {
             if (
-              request.headers.get('Authorization') === 'Bearer fake-jwt-token'
+              request.headers.get('Authorization') ===
+              'Bearer fake-jwt-admin-token'
             ) {
               return of(new HttpResponse({ status: 200, body: users }));
-            } else {
-              return throwError({ error: { message: 'Unauthorised' } });
-            }
-          }
-
-          // get user by id
-          if (request.url.match(/\/users\/\d+$/) && request.method === 'GET') {
-            if (
-              request.headers.get('Authorization') === 'Bearer fake-jwt-token'
-            ) {
-              const urlParts = request.url.split('/');
-              const id = parseInt(urlParts[urlParts.length - 1]);
-              const matchedUsers = users.filter(user => {
-                return user.id === id;
-              });
-              const user = matchedUsers.length ? matchedUsers[0] : null;
-
-              return of(new HttpResponse({ status: 200, body: user }));
             } else {
               return throwError({ error: { message: 'Unauthorised' } });
             }
@@ -147,3 +133,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       .pipe(dematerialize());
   }
 }
+
+export let fakeBackendProvider = {
+  // use fake backend in place of Http service for backend-less development
+  provide: HTTP_INTERCEPTORS,
+  useClass: FakeBackendInterceptor,
+  multi: true
+};

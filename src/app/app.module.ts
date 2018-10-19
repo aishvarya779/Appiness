@@ -23,12 +23,12 @@ import { AuthGuard } from './auth.guard';
     HttpClientModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: FakeBackendInterceptor,
       multi: true
     },
-    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
     UserAuthService,
     AuthGuard
   ],

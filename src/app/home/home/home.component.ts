@@ -3,10 +3,9 @@ import {
   OnInit,
   ViewChild,
   ViewContainerRef,
-  ComponentFactoryResolver
+  ComponentFactoryResolver,
+  OnDestroy
 } from '@angular/core';
-import { HomeService } from '../home.service';
-import { MessageService } from '../../shared/services/message.service';
 import { UserAuthService } from '../../user-auth.service';
 import { UserListComponent } from '../user-list/user-list.component';
 import { UserProfileComponent } from '../user-profile/user-profile.component';
@@ -16,13 +15,11 @@ import { UserProfileComponent } from '../user-profile/user-profile.component';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   public componentRef;
   @ViewChild('dynamicComponent', { read: ViewContainerRef })
   container;
   constructor(
-    private _homeService: HomeService,
-    private _msgService: MessageService,
     private _userAuth: UserAuthService,
     private resolver: ComponentFactoryResolver
   ) {}
@@ -47,17 +44,5 @@ export class HomeComponent implements OnInit {
 
   ngOnDestroy() {
     this.componentRef.destroy();
-  }
-
-  public getAllUsers() {
-    this._homeService.getAllUser().subscribe(
-      res => {
-        this._msgService.showSuccess('Data retrieved successfully');
-      },
-      err => {
-        console.log(err);
-        this._msgService.showError(err.error.message);
-      }
-    );
   }
 }
