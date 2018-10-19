@@ -18,190 +18,133 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
+    const users: any[] = JSON.parse(localStorage.getItem('users')) || [];
 
-    return (
-      of(null)
-        .pipe(
-          mergeMap(() => {
-            if (
-              request.url.endsWith('/authenticate') &&
-              request.method === 'POST'
-            ) {
-              let filteredUsers = users.filter(user => {
-                return (
-                  (user.userName === request.body.userName ||
-                    user.email === request.body.userName ||
-                    user.mobile === request.body.userName) &&
-                  user.password === request.body.password
-                );
-              });
-
-              if (filteredUsers.length) {
-                let user = filteredUsers[0];
-                let body = {
-                  id: user.id,
-                  userName: user.userName,
-                  name: user.name,
-                  email: user.email,
-                  mobile: user.mobile,
-                  role: user.role,
-                  address: user.address,
-                  token: 'fake-jwt-token'
-                };
-
-                return of(new HttpResponse({ status: 200, body: body }));
-              } else {
-                return throwError({
-                  error: { message: 'Username or password is incorrect' }
-                });
-              }
-            }
-
-            // get users
-            if (request.url.endsWith('/users') && request.method === 'GET') {
-              // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
-              if (
-                request.headers.get('Authorization') === 'Bearer fake-jwt-token'
-              ) {
-                return of(new HttpResponse({ status: 200, body: users }));
-              } else {
-                // return 401 not authorised if token is null or invalid
-                return throwError({ error: { message: 'Unauthorised' } });
-              }
-            }
-
-            // get user by id
-            if (
-              request.url.match(/\/users\/\d+$/) &&
-              request.method === 'GET'
-            ) {
-              // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
-              if (
-                request.headers.get('Authorization') === 'Bearer fake-jwt-token'
-              ) {
-                // find user by id in users array
-                let urlParts = request.url.split('/');
-                let id = parseInt(urlParts[urlParts.length - 1]);
-                let matchedUsers = users.filter(user => {
-                  return user.id === id;
-                });
-                let user = matchedUsers.length ? matchedUsers[0] : null;
-
-                return of(new HttpResponse({ status: 200, body: user }));
-              } else {
-                // return 401 not authorised if token is null or invalid
-                return throwError({ error: { message: 'Unauthorised' } });
-              }
-            }
-
-            // register user
-            if (
-              request.url.endsWith('/register') &&
-              request.method === 'POST'
-            ) {
-              console.log(request.body);
-              // get new user object from post body
-              let newUser = request.body;
-
-              // validation
-              let duplicateUser = users.filter(user => {
-                return user.userName === newUser.userName;
-              }).length;
-              if (duplicateUser) {
-                return throwError({
-                  error: {
-                    message:
-                      'Username "' + newUser.userName + '" is already taken'
-                  }
-                });
-              }
-              let duplicateEmail = users.filter(user => {
-                return user.email === newUser.email;
-              }).length;
-              if (duplicateEmail) {
-                return throwError({
-                  error: {
-                    message:
-                      'Email "' + newUser.email + '" is already registered'
-                  }
-                });
-              }
-
-              let duplicateMobile = users.filter(user => {
-                return user.mobile === newUser.mobile;
-              }).length;
-              if (duplicateMobile) {
-                return throwError({
-                  error: {
-                    message:
-                      'Mobile "' + newUser.mobile + '" is already registered'
-                  }
-                });
-              }
-
-              // save new user
-              newUser.id = users.length + 1;
-              users.push(newUser);
-              localStorage.setItem('users', JSON.stringify(users));
-
-              // respond 200 OK
-              return of(
-                new HttpResponse({
-                  status: 200,
-                  body: {
-                    message: 'User registered sucessfully'
-                  }
-                })
+    return of(null)
+      .pipe(
+        mergeMap(() => {
+          if (
+            request.url.endsWith('/authenticate') &&
+            request.method === 'POST'
+          ) {
+            const filteredUsers = users.filter(user => {
+              return (
+                (user.userName === request.body.userName ||
+                  user.email === request.body.userName ||
+                  user.mobile === request.body.userName) &&
+                user.password === request.body.password
               );
-            }
+            });
 
-            // delete user
+            if (filteredUsers.length) {
+              const user = filteredUsers[0];
+              const body = {
+                id: user.id,
+                userName: user.userName,
+                name: user.name,
+                email: user.email,
+                mobile: user.mobile,
+                role: user.role,
+                address: user.address,
+                token: 'fake-jwt-token'
+              };
+
+              return of(new HttpResponse({ status: 200, body: body }));
+            } else {
+              return throwError({
+                error: { message: 'Username or password is incorrect' }
+              });
+            }
+          }
+
+          // get users
+          if (request.url.endsWith('/users') && request.method === 'GET') {
             if (
-              request.url.match(/\/users\/\d+$/) &&
-              request.method === 'DELETE'
+              request.headers.get('Authorization') === 'Bearer fake-jwt-token'
             ) {
-              // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
-              if (
-                request.headers.get('Authorization') === 'Bearer fake-jwt-token'
-              ) {
-                // find user by id in users array
-                let urlParts = request.url.split('/');
-                let id = parseInt(urlParts[urlParts.length - 1]);
-                for (let i = 0; i < users.length; i++) {
-                  let user = users[i];
-                  if (user.id === id) {
-                    // delete user
-                    users.splice(i, 1);
-                    localStorage.setItem('users', JSON.stringify(users));
-                    break;
-                  }
-                }
+              return of(new HttpResponse({ status: 200, body: users }));
+            } else {
+              return throwError({ error: { message: 'Unauthorised' } });
+            }
+          }
 
-                // respond 200 OK
-                return of(new HttpResponse({ status: 200 }));
-              } else {
-                // return 401 not authorised if token is null or invalid
-                return throwError({ error: { message: 'Unauthorised' } });
-              }
+          // get user by id
+          if (request.url.match(/\/users\/\d+$/) && request.method === 'GET') {
+            if (
+              request.headers.get('Authorization') === 'Bearer fake-jwt-token'
+            ) {
+              const urlParts = request.url.split('/');
+              const id = parseInt(urlParts[urlParts.length - 1]);
+              const matchedUsers = users.filter(user => {
+                return user.id === id;
+              });
+              const user = matchedUsers.length ? matchedUsers[0] : null;
+
+              return of(new HttpResponse({ status: 200, body: user }));
+            } else {
+              return throwError({ error: { message: 'Unauthorised' } });
+            }
+          }
+
+          if (request.url.endsWith('/register') && request.method === 'POST') {
+            console.log(request.body);
+            // get new user object from post body
+            const newUser = request.body;
+
+            // validation
+            const duplicateUser = users.filter(user => {
+              return user.userName === newUser.userName;
+            }).length;
+            if (duplicateUser) {
+              return throwError({
+                error: {
+                  message:
+                    'Username "' + newUser.userName + '" is already taken'
+                }
+              });
+            }
+            const duplicateEmail = users.filter(user => {
+              return user.email === newUser.email;
+            }).length;
+            if (duplicateEmail) {
+              return throwError({
+                error: {
+                  message: 'Email "' + newUser.email + '" is already registered'
+                }
+              });
             }
 
-            // pass through any requests not handled above
-            return next.handle(request);
-          })
-        )
+            const duplicateMobile = users.filter(user => {
+              return user.mobile === newUser.mobile;
+            }).length;
+            if (duplicateMobile) {
+              return throwError({
+                error: {
+                  message:
+                    'Mobile "' + newUser.mobile + '" is already registered'
+                }
+              });
+            }
 
-        // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)
-        .pipe(materialize())
-        .pipe(delay(500))
-        .pipe(dematerialize())
-    );
+            newUser.id = users.length + 1;
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            return of(
+              new HttpResponse({
+                status: 200,
+                body: {
+                  message: 'User registered sucessfully'
+                }
+              })
+            );
+          }
+
+          return next.handle(request);
+        })
+      )
+      .pipe(materialize())
+      .pipe(delay(500))
+      .pipe(dematerialize());
   }
 }
-
-// export let fakeBackendProvider = {
-//   // use fake backend in place of Http service for backend-less development
-//   provide: HTTP_INTERCEPTORS,
-//   useClass: FakeBackendInterceptor,
-//   multi: true
-// };

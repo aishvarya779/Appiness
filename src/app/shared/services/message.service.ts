@@ -8,7 +8,7 @@ export class MessageService {
   constructor(private snackBar: MatSnackBar) {}
 
   public showSuccess(msg) {
-    let config: MatSnackBarConfig = {
+    const config: MatSnackBarConfig = {
       duration: 2000,
       panelClass: 'successMessage',
       verticalPosition: 'top',
@@ -18,7 +18,7 @@ export class MessageService {
   }
 
   public showError(msg) {
-    let config: MatSnackBarConfig = {
+    const config: MatSnackBarConfig = {
       duration: 2000,
       panelClass: 'errorMessage',
       verticalPosition: 'top',
