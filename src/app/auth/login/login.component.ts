@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   public userForm: FormGroup;
-  public pType: string = 'password';
+  public pType = 'password';
   constructor(private _fb: FormBuilder, private _router: Router) {}
 
   ngOnInit() {

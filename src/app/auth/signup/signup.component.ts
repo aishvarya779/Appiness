@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  public pType: string = 'password';
+  public pType = 'password';
   public signUpForm: FormGroup;
   public roles: string[] = ['Admin', 'User'];
   public isSubmitted: boolean = false;
