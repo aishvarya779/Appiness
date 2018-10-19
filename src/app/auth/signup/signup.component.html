@@ -13,6 +13,14 @@
         <!-- <mat-hint>Hint</mat-hint> -->
       </mat-form-field>
       <mat-form-field appearance="outline" fxFlex="49">
+        <mat-label> Name</mat-label>
+        <input matInput placeholder=" Name" formControlName="name">
+        <mat-icon matPrefix>sentiment_very_satisfied</mat-icon>
+        <mat-error *ngIf="registedForm.submitted && signUpForm.get('name').hasError('required')"> Name is
+          required</mat-error>
+        <!-- <mat-hint>Hint</mat-hint> -->
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="49">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Email" type="email" formControlName="email">
         <mat-icon matPrefix>email</mat-icon>

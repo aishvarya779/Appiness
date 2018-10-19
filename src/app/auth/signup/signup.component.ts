@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomValidation } from '../../shared/classes/custom-validation';
 import { Router } from '@angular/router';
 import { PasswordStrength } from './../../shared/classes/password-strength';
+import { AuthService } from '../auth.service';
+import { MessageService } from '../../shared/services/message.service';
 @Component({
   selector: 'appi-signup',
   templateUrl: './signup.component.html',
@@ -13,12 +15,18 @@ export class SignupComponent implements OnInit {
   public signUpForm: FormGroup;
   public roles: string[] = ['Admin', 'User'];
   public isSubmitted = false;
-  constructor(private _fb: FormBuilder, private _router: Router) {}
+  constructor(
+    private _fb: FormBuilder,
+    private _router: Router,
+    private _authSerivce: AuthService,
+    private _msgService: MessageService
+  ) {}
 
   ngOnInit() {
     this.signUpForm = this._fb.group(
       {
         userName: ['', Validators.required],
+        name: ['', Validators.required],
         email: [
           '',
           Validators.compose([Validators.required, Validators.email])
@@ -54,11 +62,20 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser() {
-    console.log(this.signUpForm);
+    // console.log(this.signUpForm);
     if (this.signUpForm.invalid) {
       return;
     }
-    this._router.navigate(['auth']);
+    this._authSerivce.register(this.signUpForm.value).subscribe(
+      res => {
+        console.log(res);
+        this._msgService.showSuccess('User Registered successfully');
+        this._router.navigate(['auth']);
+      },
+      err => {
+        this._msgService.showError(err.error.message);
+      }
+    );
   }
 
   togglePType(evt) {

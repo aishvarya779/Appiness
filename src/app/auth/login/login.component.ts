@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { MessageService } from '../../shared/services/message.service';
 
 @Component({
   selector: 'appi-login',
@@ -10,7 +12,12 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   public userForm: FormGroup;
   public pType = 'password';
-  constructor(private _fb: FormBuilder, private _router: Router) {}
+  constructor(
+    private _fb: FormBuilder,
+    private _router: Router,
+    private _authService: AuthService,
+    private _msgService: MessageService
+  ) {}
 
   ngOnInit() {
     this.userForm = this._fb.group({
@@ -32,6 +39,14 @@ export class LoginComponent implements OnInit {
     if (this.userForm.invalid) {
       return;
     }
-    this._router.navigate(['home']);
+    this._authService.userLogin(this.userForm.value).subscribe(
+      res => {
+        this._msgService.showSuccess('User logged in successfully');
+        this._router.navigate(['home']);
+      },
+      err => {
+        this._msgService.showError(err.error.message);
+      }
+    );
   }
 }

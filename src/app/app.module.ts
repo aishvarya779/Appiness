@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { MainLayoutModule } from './main-layout/main-layout.module';
+import { FakeBackendInterceptor } from './fake-db/fake-backend';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Interceptor } from './interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,9 +17,17 @@ import { MainLayoutModule } from './main-layout/main-layout.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    MainLayoutModule
+    MainLayoutModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: FakeBackendInterceptor,
+      multi: true
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

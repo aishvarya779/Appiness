@@ -10,3 +10,13 @@ body {
   // flex-direction: column;
   font-family: 'Roboto', sans-serif;
 }
+
+.errorMessage {
+  background: red;
+  color: #ffffff;
+}
+
+.successMessage {
+  background: green;
+  color: #ffffff;
+}
