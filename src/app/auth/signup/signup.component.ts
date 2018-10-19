@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomValidation } from '../../shared/classes/custom-validation';
 import { Router } from '@angular/router';
-
+import { PasswordStrength } from './../../shared/classes/password-strength';
 @Component({
   selector: 'appi-signup',
   templateUrl: './signup.component.html',
@@ -32,7 +32,14 @@ export class SignupComponent implements OnInit {
             Validators.maxLength(10)
           ])
         ],
-        password: ['', Validators.required],
+        password: [
+          '',
+          Validators.compose([
+            Validators.required,
+            PasswordStrength.strength,
+            Validators.minLength(8)
+          ])
+        ],
         confirmPassword: ['', Validators.required],
         address: [
           '',
@@ -46,6 +53,7 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser() {
+    console.log(this.signUpForm);
     if (this.signUpForm.invalid) {
       return;
     }

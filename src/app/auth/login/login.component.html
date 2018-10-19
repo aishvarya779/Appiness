@@ -4,7 +4,7 @@
     <h3 fxFlex="100">Login</h3>
     <form [formGroup]="userForm" fxFill fxLayout="column" novalidate (submit)="loginUser()" #loginForm="ngForm">
       <mat-form-field appearance="outline" fxFlex="100">
-        <mat-label>Username</mat-label>
+        <mat-label>Username/Email/Mobile Number</mat-label>
         <input matInput placeholder="Username" formControlName="userName">
         <mat-icon matPrefix>sentiment_very_satisfied</mat-icon>
         <mat-error *ngIf="loginForm.submitted && userForm.controls['userName'].hasError('required')">User Name is
