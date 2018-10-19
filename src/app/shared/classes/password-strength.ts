@@ -2,10 +2,10 @@ import { FormControl } from '@angular/forms';
 
 export class PasswordStrength {
   public static strength(control: FormControl) {
-    let hasNumber = /\d/.test(control.value);
-    let hasUpper = /[A-Z]/.test(control.value);
-    let hasLower = /[a-z]/.test(control.value);
-    let errors = [];
+    const hasNumber = /\d/.test(control.value);
+    const hasUpper = /[A-Z]/.test(control.value);
+    const hasLower = /[a-z]/.test(control.value);
+    const errors = [];
     if (!hasNumber) {
       errors.push('Password must contain one digit');
     }
