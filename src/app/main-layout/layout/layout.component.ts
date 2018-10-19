@@ -17,7 +17,6 @@ export class LayoutComponent implements OnInit {
     this.userData$ = this._userAuth.userData$;
     this.userData$.subscribe(data => {
       if (data) {
-        console.log(data);
         this.userData = data;
       }
     });

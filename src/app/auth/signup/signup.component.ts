@@ -62,13 +62,11 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser() {
-    // console.log(this.signUpForm);
     if (this.signUpForm.invalid) {
       return;
     }
     this._authSerivce.register(this.signUpForm.value).subscribe(
       res => {
-        console.log(res);
         this._msgService.showSuccess('User Registered successfully');
         this._router.navigate(['auth']);
       },

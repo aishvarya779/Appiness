@@ -15,10 +15,8 @@ export class PasswordStrength {
     if (!hasLower) {
       errors.push('Password must contain one Lowercase letter');
     }
-    // console.log('Num, Upp, Low', hasNumber, hasUpper, hasLower);
     const valid = hasNumber && hasUpper && hasLower;
     if (errors.length > 0) {
-      // return what´s not valid
       return { strong: errors };
     }
     return null;

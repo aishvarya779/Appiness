@@ -20,11 +20,9 @@ export class HomeComponent implements OnInit {
   public getAllUsers() {
     this._homeService.getAllUser().subscribe(
       res => {
-        console.log(res);
         this._msgService.showSuccess('Data retrieved successfully');
       },
       err => {
-        console.log(err);
         this._msgService.showError(err.error.message);
       }
     );
