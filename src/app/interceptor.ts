@@ -14,7 +14,6 @@ export class Interceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(currentUser);
     if (currentUser && currentUser.token) {
       request = request.clone({
         setHeaders: {

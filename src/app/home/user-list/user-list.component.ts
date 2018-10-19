@@ -7,6 +7,7 @@ import { MessageService } from '../../shared/services/message.service';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
+  public users: any[];
   constructor(
     private _homeService: HomeService,
     private _msgService: MessageService
@@ -18,12 +19,11 @@ export class UserListComponent implements OnInit {
 
   public getAllUsers() {
     this._homeService.getAllUser().subscribe(
-      res => {
-        console.log(res);
+      (res: any) => {
+        this.users = res;
         this._msgService.showSuccess('Data retrieved successfully');
       },
       err => {
-        console.log(err);
         this._msgService.showError(err.error.message);
       }
     );

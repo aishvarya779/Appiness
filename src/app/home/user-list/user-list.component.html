@@ -1,3 +1,14 @@
-<p>
-  user-list works!
-</p>
+<div fxLayout="row wrap" class="main" fxFlex="100" fxLayoutGap="5px" fxLayoutGap.xs="0">
+  <mat-card fxFlex="25" fxFlex.xs="100" *ngFor="let user of users">
+    <mat-card-title>{{user.userName}}</mat-card-title>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item role="listitem">Name: {{user.name}}</mat-list-item>
+        <mat-list-item role="listitem">Role: {{user.role}}</mat-list-item>
+        <mat-list-item role="listitem">Email: {{user.email}}</mat-list-item>
+        <mat-list-item role="listitem">Mobile: {{user.mobile}}</mat-list-item>
+        <mat-list-item role="listitem">Address: {{user.address}}</mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

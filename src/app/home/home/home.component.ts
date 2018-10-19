@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._userAuth.userData$.subscribe(val => {
-      console.log(val);
       if (val && val.role === 'Admin') {
         const factory = this.resolver.resolveComponentFactory(
           UserListComponent

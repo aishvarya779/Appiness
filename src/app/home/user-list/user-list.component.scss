@@ -1,0 +1,13 @@
+.main {
+  padding: 15px;
+  mat-card-title {
+    text-align: center;
+  }
+  .mat-list > .mat-list-item:nth-child(2n + 1) {
+    background-color: #cfcfcf;
+    // color: #ffffff;
+  }
+  .mat-list > .mat-list-item:nth-child(2n) {
+    background-color: #ebebeb;
+  }
+}
