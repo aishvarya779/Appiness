@@ -9,6 +9,7 @@ import { MainLayoutModule } from './main-layout/main-layout.module';
 import { FakeBackendInterceptor } from './fake-db/fake-backend';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptor';
+import { UserAuthService } from './user-auth.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +27,8 @@ import { Interceptor } from './interceptor';
       useClass: FakeBackendInterceptor,
       multi: true
     },
-    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
+    UserAuthService
   ],
   bootstrap: [AppComponent]
 })
