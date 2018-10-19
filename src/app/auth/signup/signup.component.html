@@ -67,6 +67,18 @@
           Password does not match </mat-error>
         <!-- <mat-hint>Hint</mat-hint> -->
       </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="99">
+        <mat-label>Address</mat-label>
+        <textarea matInput placeholder="Address" maxlength="30" formControlName="address"></textarea>
+        <!-- <mat-icon matPrefix>phone_iphone</mat-icon> -->
+        <mat-icon matPrefix>home</mat-icon>
+        <mat-hint align="end">{{signUpForm.controls['address'].value.length}} / 30</mat-hint>
+        <!-- <mat-error *ngIf="registedForm.submitted && signUpForm.get('address').hasError('minlength')">Enter 10 Digit
+          Mobile Number</mat-error> -->
+        <mat-error *ngIf="registedForm.submitted && signUpForm.get('address').hasError('required')">User address is
+          required</mat-error>
+        <!-- <mat-hint>Hint</mat-hint> -->
+      </mat-form-field>
       <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
         <button mat-stroked-button routerLink="/auth" color="primary">Login</button>
         <button mat-raised-button color="primary" type="submit">Sign Up</button>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomValidation } from '../../shared/classes/custom-validation';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'appi-signup',
@@ -12,7 +13,7 @@ export class SignupComponent implements OnInit {
   public signUpForm: FormGroup;
   public roles: string[] = ['Admin', 'User'];
   public isSubmitted: boolean = false;
-  constructor(private _fb: FormBuilder) {}
+  constructor(private _fb: FormBuilder, private _router: Router) {}
 
   ngOnInit() {
     this.signUpForm = this._fb.group(
@@ -35,7 +36,7 @@ export class SignupComponent implements OnInit {
         confirmPassword: ['', Validators.required],
         address: [
           '',
-          Validators.compose([Validators.required, Validators.maxLength(29)])
+          Validators.compose([Validators.required, Validators.maxLength(30)])
         ]
       },
       {
@@ -45,11 +46,10 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser() {
-    console.log(this.signUpForm);
-    console.log('btn clicked');
     if (this.signUpForm.invalid) {
-      this.isSubmitted = true;
+      return;
     }
+    this._router.navigate(['auth']);
   }
 
   togglePType(evt) {
