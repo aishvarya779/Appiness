@@ -12,7 +12,7 @@ export class SignupComponent implements OnInit {
   public pType = 'password';
   public signUpForm: FormGroup;
   public roles: string[] = ['Admin', 'User'];
-  public isSubmitted: boolean = false;
+  public isSubmitted = false;
   constructor(private _fb: FormBuilder, private _router: Router) {}
 
   ngOnInit() {
