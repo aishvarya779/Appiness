@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomValidation } from '../../shared/classes/custom-validation';
 import { Router } from '@angular/router';
@@ -8,12 +8,15 @@ import { MessageService } from '../../shared/services/message.service';
 @Component({
   selector: 'appi-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SignupComponent implements OnInit {
   public isLoading = false;
   public pType = 'password';
-  public signUpForm: FormGroup;
+  public firstFormGroup: FormGroup;
+  public secondFromGroup: FormGroup;
+  public thirdFormGroup: FormGroup;
   public roles: string[] = ['Admin', 'User'];
   public isSubmitted = false;
   constructor(
@@ -24,24 +27,29 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.signUpForm = this._fb.group(
+    this.firstFormGroup = this._fb.group({
+      userName: ['', Validators.required],
+      name: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, Validators.email])]
+    });
+    this.secondFromGroup = this._fb.group({
+      role: ['', Validators.required],
+      mobile: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$')
+        ])
+      ],
+      address: [
+        '',
+        Validators.compose([Validators.required, Validators.maxLength(30)])
+      ]
+    });
+    this.thirdFormGroup = this._fb.group(
       {
-        userName: ['', Validators.required],
-        name: ['', Validators.required],
-        email: [
-          '',
-          Validators.compose([Validators.required, Validators.email])
-        ],
-        role: ['', Validators.required],
-        mobile: [
-          '',
-          Validators.compose([
-            Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern('^[0-9]*$')
-          ])
-        ],
         password: [
           '',
           Validators.compose([
@@ -50,11 +58,7 @@ export class SignupComponent implements OnInit {
             Validators.minLength(8)
           ])
         ],
-        confirmPassword: ['', Validators.required],
-        address: [
-          '',
-          Validators.compose([Validators.required, Validators.maxLength(30)])
-        ]
+        confirmPassword: ['', Validators.required]
       },
       {
         validator: CustomValidation.MatchPassword
@@ -63,11 +67,20 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser() {
-    if (this.signUpForm.invalid) {
+    if (
+      this.firstFormGroup.invalid ||
+      this.secondFromGroup.invalid ||
+      this.thirdFormGroup.invalid
+    ) {
       return;
     }
+    const data = {
+      ...this.firstFormGroup.value,
+      ...this.secondFromGroup.value,
+      ...this.thirdFormGroup.value
+    };
     this.isLoading = true;
-    this._authSerivce.register(this.signUpForm.value).subscribe(
+    this._authSerivce.register(data).subscribe(
       res => {
         this.isLoading = false;
         this._msgService.showSuccess('User Registered successfully');

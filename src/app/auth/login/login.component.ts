@@ -53,4 +53,11 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+  onkey(evt) {
+    evt.stopPropagation();
+    if (evt.key === 'Enter') {
+      this.loginUser();
+    }
+  }
 }

@@ -13,7 +13,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline" fxFlex="100">
         <mat-label>Password</mat-label>
-        <input matInput placeholder="Password" type="{{pType}}" formControlName="password">
+        <input matInput placeholder="Password" type="{{pType}}" (keydown)="onkey($event)"  formControlName="password">
         <mat-icon matPrefix>lock</mat-icon>
         <mat-icon class="cursor" matSuffix (click)="togglePType($event)">{{ pType === 'password' ? 'visibility_off' :
           'visibility'}}</mat-icon>
