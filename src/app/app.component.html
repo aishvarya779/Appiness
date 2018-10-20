@@ -1,5 +1,9 @@
 <!-- <div fxLayout="column" fxFill fxLayoutAlign="center center">
 
 </div> -->
-
+<div class="load-bar" *ngIf="isLoading">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
 <router-outlet></router-outlet>
