@@ -11,6 +11,7 @@ import { MessageService } from '../../shared/services/message.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+  public isLoading = false;
   public pType = 'password';
   public signUpForm: FormGroup;
   public roles: string[] = ['Admin', 'User'];
@@ -65,12 +66,15 @@ export class SignupComponent implements OnInit {
     if (this.signUpForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this._authSerivce.register(this.signUpForm.value).subscribe(
       res => {
+        this.isLoading = false;
         this._msgService.showSuccess('User Registered successfully');
         this._router.navigate(['auth']);
       },
       err => {
+        this.isLoading = false;
         this._msgService.showError(err.error.message);
       }
     );

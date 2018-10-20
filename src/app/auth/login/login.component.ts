@@ -10,6 +10,7 @@ import { MessageService } from '../../shared/services/message.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  public isLoading = false;
   public userForm: FormGroup;
   public pType = 'password';
   constructor(
@@ -39,12 +40,15 @@ export class LoginComponent implements OnInit {
     if (this.userForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this._authService.userLogin(this.userForm.value).subscribe(
       res => {
+        this.isLoading = false;
         this._msgService.showSuccess('User logged in successfully');
         this._router.navigate(['home']);
       },
       err => {
+        this.isLoading = false;
         this._msgService.showError(err.error.message);
       }
     );

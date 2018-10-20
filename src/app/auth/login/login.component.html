@@ -23,7 +23,8 @@
       </mat-form-field>
       <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
         <button mat-stroked-button routerLink="/auth/register" color="primary">Sign Up</button>
-        <button mat-raised-button color="primary" type="submit">Login</button>
+        <button mat-raised-button *ngIf="!isLoading" color="primary" type="submit">Login</button>
+        <mat-spinner [diameter]="40" *ngIf="isLoading"></mat-spinner>
       </div>
     </form>
 
